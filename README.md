@@ -41,3 +41,20 @@ int main() {
 	return 0;
 }
 ```
+
+This is the same code in "main.c".
+
+## Compilation
+To compile Moon, you need:
+
+- SDL2_ttf
+- SDL2_image
+- SDL2
+- SDL2_mixer
+- SDL2main (on Windows)
+
+### If you're running Windows
+Aside from needing SDL2main, you'd need to put the include library fake statics in `lib/` and headers in `lib/include`. The `.dll`s go to the same directory as the exectuable (like normal).
+
+## Photos
+![Photo of Blit, my game](Blit.png)
