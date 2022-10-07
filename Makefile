@@ -35,12 +35,16 @@ else ifeq ($(LIBTYPE), DYNAMIC)
 endif
 
 all: $(ENGINE)
+example: bin/game.exe
 
 $(OBJDIR)/%.o: $(ENGINEDIR)/%.c
 	gcc $^ -c -I lib/include -I $(ENGINEDIR) -Wall $(DEBUG) --std=c99 -o $@
 
 $(ENGINE): $(ENGINESRCS) $(ENGINEOBJS) $(ENGINEINCS)
 	$(LINK)
+
+bin/game.exe: main.c $(ENGINE)
+	gcc $< -o $@ $(LIBS)
 
 clean:
 	rm $(OBJDIR)/*.o $(ENGINE) lib/$(ENGINENAME) bin/game.exe 
