@@ -33,8 +33,8 @@ Plugging these 10 lines of code into a working environment will give a blank win
 #include "MoonEngine.h"
 int main() {
 	Window window;
-	InitWin(&window, 1024, 720, "Moon");
-	while (WindowIsOpen(&window, 60)) {
+	InitWindow(&window, 1024, 720, "Moon");
+	while (WindowIsOpen(60)) {
 		printf("Window open, running at 60 fps!");
 	}
 	End(window);
@@ -54,7 +54,7 @@ To compile Moon, you need:
 - SDL2main (on Windows)
 
 ### If you're running Windows
-Aside from needing SDL2main, you'd need to put the include library fake statics in `lib/` and headers in `lib/include`. The `.dll`s go to the same directory as the exectuable (like normal).
+Aside from needing SDL2main, you'd need to put the include library fake statics in `lib/` and headers in `lib/include`. The `.dll`s go to the same directory as the exectuable (like normal; in example case `bin/`).
 
 ## Photos
 ![Photo of Blit, my game](Blit.png)

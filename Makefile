@@ -10,7 +10,7 @@ ENGINEOBJS = $(patsubst $(ENGINEDIR)/%.c, $(OBJDIR)/%.o, $(ENGINESRCS))
 LIBTYPE ?= STATIC
 LINK =
 
-CFLAGS = -I lib/include -I src/include -I $(ENGINEDIR) -Wall -Wextra
+CFLAGS = -I lib/include -I $(ENGINEDIR) -Wall -Wextra
 ENGINENAME = libmoon.a
 ENGINE = lib/$(ENGINENAME)
 DEBUG =# -DDEBUG
@@ -44,7 +44,7 @@ $(ENGINE): $(ENGINESRCS) $(ENGINEOBJS) $(ENGINEINCS)
 	$(LINK)
 
 bin/game.exe: main.c $(ENGINE)
-	gcc $< -o $@ $(LIBS)
+	gcc $< -o $@ $(LIBS) $(CFLAGS)
 
 clean:
 	rm $(OBJDIR)/*.o $(ENGINE) lib/$(ENGINENAME) bin/game.exe 
