@@ -1,5 +1,5 @@
 # MoonEngine - An engine used to make (semi-)powerful games.
-MoonEngine (or Moon) is a 70KB game engine that I've (oti) been working on, that's quite modular with help of backends (i.e. SDL2).
+MoonEngine (or Moon) is a 70KB game engine/framework that I've (oti) been working on, that's quite modular with help of backends (i.e. SDL2).
 
 **NOTE**: Because this engine is under rapid development, this is Alpha.
 
