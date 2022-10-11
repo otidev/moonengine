@@ -35,13 +35,13 @@ bool RectanglePointCollide(Rectangle rect, Vec2 vec) {
 }
 
 bool RectangleSideCollide(Rectangle a, Rectangle b, RectSide side) {
-	Vec2 leftTop = (Vec2){b.x, b.y};
+	Vec2 leftTop = (Vec2){b.x, b.y + 1};
 	Vec2 leftMid = (Vec2){b.x, b.y + (b.h / 2)};
-	Vec2 leftBot = (Vec2){b.x, b.y + b.h};
+	Vec2 leftBot = (Vec2){b.x, b.y + b.h - 1};
 	
-	Vec2 rightTop = (Vec2){b.x + b.w, b.y};
+	Vec2 rightTop = (Vec2){b.x + b.w, b.y + 1};
 	Vec2 rightMid = (Vec2){b.x + b.w, b.y + (b.h / 2)};
-	Vec2 rightBot = (Vec2){b.x + b.w, b.y + b.h};
+	Vec2 rightBot = (Vec2){b.x + b.w, b.y + b.h - 1};
 	
 	Vec2 topMid = (Vec2){b.x + (b.w / 2), b.y};
 	Vec2 bottomMid = (Vec2){b.x + (b.w / 2), b.y + b.h};

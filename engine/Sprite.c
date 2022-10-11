@@ -15,7 +15,7 @@ void PlayAnim(Sprite *spr, float updateTime) {
 
 	if (timer >= updateTime) {
 		// Add the width of a frame to the x value.
-		spr->sRec.x += (sizew / spr->frame);
+		spr->sRec.x += (sizew / spr->frames);
 		// Reset the timer to 0.
 		timer = 0;
 		if (spr->sRec.x == sizew) {
@@ -50,10 +50,8 @@ void RenderSpriteMod(Sprite* spr, Camera* camera, SDL_Renderer* renderer) {
 	}
 }
 
-void InitSprite(Sprite *spr, int width, int height, char* textureFilename) {
+static void InitSpriteData(Sprite *spr) {
 	spr->scale = (Vec2){1, 1};
-	spr->width = width;
-	spr->height = height;
 	spr->visible = true;
 	spr->colour = (SDL_Colour){0xff, 0xff, 0xff, 0xff};
 
@@ -62,14 +60,20 @@ void InitSprite(Sprite *spr, int width, int height, char* textureFilename) {
 	spr->dRec = (Rectangle){0, 0, spr->width / spr->scale.x, spr->height / spr->scale.y};
 
 	spr->facingRight = true;
-	if (textureFilename)
-		spr->tex = LoadTexture(textureFilename);
-	else
-		spr->tex = CreateTexture(SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STATIC, width, height);
+}
+
+void InitSprite(Sprite *spr, int width, int height, char* textureFilename) {
+	spr->width = width;
+	spr->height = height;
+	InitSpriteData(spr);
+	spr->tex = LoadTexture(textureFilename);
 }
 
 void InitSpriteNoTex(Sprite *spr, int width, int height) {
-	InitSprite(spr, width, height, NULL);
+	spr->width = width;
+	spr->height = height;
+	InitSpriteData(spr);
+	spr->tex = CreateTexture(SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STATIC, width, height);
 }
 
 void SetScale(Sprite* spr) {

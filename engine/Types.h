@@ -75,8 +75,8 @@ typedef struct Sprite {
 	// Sprite width and height
 	int width;
 	int height;
-	// Animation frame.
-	int frame;
+	// How many frames in animation.
+	int frames;
 	// Center of rotation.
 	Vec2 center;
 	// Facing right or left
