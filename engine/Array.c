@@ -16,8 +16,15 @@ void AddToArray(void* arrayPtr[], void* pointer, int arraySize) {
 		fprintf(stderr, "\033[1mError\033[0m: No size for arrayptr.");
 	
 	int i = 0;
-	while (arrayPtr[i] != NULL)
+	while (arrayPtr[i] != NULL && i < arraySize)
 		i++;
+
+	if (i == arraySize - 1) {
+		fprintf(stderr, "\033[1mError\033[0m: No more memory in array 0x%p", arrayPtr);
+		printf("%p", arrayPtr[i]);
+		return;
+	}
+
 	arrayPtr[i] = pointer;
 	#ifdef DEBUG
 		fprintf(stderr, "Place in array: %d\n", i);

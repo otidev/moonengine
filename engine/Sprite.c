@@ -73,7 +73,17 @@ void InitSpriteNoTex(Sprite *spr, int width, int height) {
 	spr->width = width;
 	spr->height = height;
 	InitSpriteData(spr);
-	spr->tex = CreateTexture(SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STATIC, width, height);
+
+	SDL_Surface* surf = SDL_CreateRGBSurface(0, width, height, 32, 0, 0, 0, 0);
+	uint32_t* pixels;
+	for (int y = 0; y < height; y++) {
+		for (int x = 0; x < width; x++) {
+			pixels = (uint32_t*)(surf->pixels + y * surf->pitch + x * surf->format->BytesPerPixel);
+			*pixels = 0xffffffff;
+		}
+	}
+	spr->tex = CreateTextureFromSurface(surf);
+
 }
 
 void SetScale(Sprite* spr) {

@@ -34,7 +34,6 @@ static void ParseTileset(Tileset* tileset, char* tsDir, char* filename) {
 	strcpy(srcFilename, tsDir);
 	strcat(srcFilename, cJSON_GetObjectItem(root, "image")->valuestring);
 	tileset->texture = LoadTexture(srcFilename);
-	printf("%s\n", srcFilename);
 
 	// Get last GID
 	tileset->lastgid = cJSON_GetObjectItem(root, "tilecount")->valueint + tileset->firstgid - 1;
