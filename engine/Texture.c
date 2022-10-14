@@ -45,12 +45,12 @@ void FreeTexArray(Bitmap *arrayPtr[], int size) {
 	
 	int i = 0;
 
-	while (arrayPtr[i] != NULL) {
-		#ifdef DEBUG
-			fprintf(stderr, "Unloaded pointer to texture: %p\n", arrayPtr[i]);
-		#endif
-
-		SDL_DestroyTexture(*arrayPtr[i]);
-		i++;
+	for (i = 0; i < size; i++) {
+		if (arrayPtr[i] != NULL) {
+			#ifdef DEBUG
+				fprintf(stderr, "Unloaded pointer to texture: %p\n", arrayPtr[i]);
+			#endif
+			SDL_DestroyTexture(*arrayPtr[i]);
+		}
 	}
 }

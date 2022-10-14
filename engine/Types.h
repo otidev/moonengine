@@ -2,7 +2,7 @@
 #define MOON_ENGINE_TYPES_H
 
 // Texture array size
-#define TEXARRAYSIZE 1024
+#define TEXARRAYSIZE 4096
 // Sound array size
 #define SOUNDARRAYSIZE 2048
 // Music array size
@@ -162,8 +162,6 @@ typedef struct Entity {
 	Vec2 speed;
 	// Position vector
 	Vec2 pos;
-	// Entity sprite
-	Sprite spr;
 } Entity;
 
 typedef struct Font {

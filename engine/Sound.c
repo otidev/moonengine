@@ -65,12 +65,13 @@ void FreeSoundArray(Sound* arrayPtr[], int size) {
 	
 	int i = 0;
 
-	while (arrayPtr[i] != NULL) {
-		#ifdef DEBUG
-			fprintf(stderr, "Unloaded pointer to sound: %p\n", arrayPtr[i]);
-		#endif
-		FreeSound(arrayPtr[i]);
-		i++;
+	for (i = 0; i < size; i++) {
+		if (arrayPtr[i] != NULL) {
+			#ifdef DEBUG
+				fprintf(stderr, "Unloaded pointer to sound: %p\n", arrayPtr[i]);
+			#endif
+			FreeSound(arrayPtr[i]);
+		}
 	}
 }
 
@@ -80,11 +81,12 @@ void FreeMusicArray(Music* arrayPtr[], int size) {
 	
 	int i = 0;
 
-	while (arrayPtr[i] != NULL) {
-		#ifdef DEBUG
-			fprintf(stderr, "Unloaded pointer to music: %p\n", arrayPtr[i]);
-		#endif
-		FreeMusic(arrayPtr[i]);
-		i++;
+	for (i = 0; i < size; i++) {
+		if (arrayPtr[i] != NULL) {
+			#ifdef DEBUG
+				fprintf(stderr, "Unloaded pointer to music: %p\n", arrayPtr[i]);
+			#endif
+			FreeMusic(arrayPtr[i]);
+		}
 	}
 }

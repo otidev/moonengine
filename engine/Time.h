@@ -16,6 +16,6 @@ float GetDelta(void);
 void SetFPS(float fps);
 
 // Gets FPS.
-double GetFPS(void);
+float GetFPS(void);
 
 #endif

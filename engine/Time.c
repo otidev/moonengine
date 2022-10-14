@@ -20,7 +20,7 @@ void EndCounter(void) {
 	timeElapsed = (timeEnd - timeStart) * 0.001;
 	#ifdef DEBUG
 		// Prints FPS.
-		if ((timeEnd - timeStart) > 0) fprintf(stderr, "FPS: %f\n", GetFPS());
+		fprintf(stderr, "FPS: %f\n", GetFPS());
 		// Prints deltatime
 		fprintf(stderr, "Delta: %f ", timeElapsed);
 	#endif
@@ -36,6 +36,6 @@ void SetFPS(float fps) {
 	}
 }
 
-double GetFPS(void) {
-	return 1000 / (double) (timeEnd - timeStart);
+float GetFPS(void) {
+	return 1 / GetDelta();
 }
