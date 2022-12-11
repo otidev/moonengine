@@ -11,3 +11,6 @@ If you can't find what you are looking for, you can make it! Add it to the repo 
 
 ## NO DOCS!!!
 Sorry, the current documentation (if you can call it that), is really simple. I might add Doxygen to it, though!
+
+## Will you add CMake?
+Yes, I will. After a some thinking I've decided to add CMake soon. Keep your eyes open!
