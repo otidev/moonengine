@@ -10,9 +10,11 @@
 
 #include <SDL.h>
 
-typedef SDL_Rect Rectangle;
+typedef GPU_Rect Rectangle;
 // NOTE: This is a pointer!!
-typedef SDL_Texture* Bitmap;
+typedef GPU_Image Bitmap;
+
+#define COLOUR_FULL (SDL_Colour){0xff, 0xff, 0xff, 0xff}
 
 // A 2D vector struct.
 typedef struct Vec2 {
@@ -83,10 +85,15 @@ typedef struct Sprite {
 	bool facingRight;
 	// Scaling vector
 	Vec2 scale;
-	float rotation; // Rotation
-	bool visible; // Visibility flag
-	SDL_Colour colour; // Colour
+	// Rotation
+	float rotation;
+	// Visibility flag
+	bool visible;
+	// Colour
+	SDL_Colour colour;
 } Sprite;
+
+#define SPR_MIDDLE(spr) (Vec2){spr->width / 2, spr->height / 2};
 
 typedef enum GamepadButtons {
 	// PAD_RIGHT_ is for the ABXY or the PS5 stuff
@@ -132,7 +139,7 @@ typedef struct Window {
 	// Main window
 	SDL_Window *window;
 	// Main renderer
-	SDL_Renderer *renderer;
+	GPU_Target* renderer;
 	// Game-runnning loop bool
 	bool gameRuns;
 
@@ -151,6 +158,9 @@ typedef struct Window {
 	// Window height
 	int height;
 } Window;
+
+extern Window* globalWindow;
+extern GPU_Target* globalTarget;
 
 // An entity struct type containing a hit/hurtbox, velocity, positioning, a sprite, etc.
 typedef struct Entity {

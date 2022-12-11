@@ -8,8 +8,7 @@ int frame = 0;
 
 void PlayAnim(Sprite *spr, float updateTime) {
 	// Geting full width of texture
-	int sizew = 0;
-	SDL_QueryTexture(spr->tex, NULL, NULL, &sizew, NULL);
+	int sizew = spr->tex.w;
 	// Adds deltatime to the timer.
 	timer += GetDelta();
 
@@ -26,27 +25,28 @@ void PlayAnim(Sprite *spr, float updateTime) {
 
 }
 
-void RenderSprite(Sprite* spr, SDL_Renderer* renderer) {
-	SDL_Point center = (SDL_Point){(int)spr->center.x, (int)spr->center.y};
-
+void RenderSprite(Sprite* spr) {
 	SDL_RendererFlip flip;
 	if (spr->visible) {
 		if (!spr->facingRight)
 			flip = SDL_FLIP_HORIZONTAL;
 		else
 			flip = SDL_FLIP_NONE;
-		
-		SetTextureColour(spr->tex, spr->colour, renderer);
-		DrawTextureEx(spr->tex, &spr->sRec, &spr->dRec, spr->rotation, &center, flip, renderer);
+
+		GPU_SetColor(&spr->tex, spr->colour);
+		DrawTextureEx(&spr->tex, &spr->sRec, &spr->dRec, spr->rotation, &spr->center, flip);
 	}
 }
 
-void RenderSpriteMod(Sprite* spr, Camera* camera, SDL_Renderer* renderer) {
+void  RenderSpriteMod(Sprite* spr, Camera* camera) {
+	// TODO: Fix this, because it's broken :<(=-=:
 	if (RectangleInCamera(camera, spr->dRec)) {
-		Sprite spriteTmp = *spr;
-		spriteTmp.dRec.x -= camera->rect.x;
-		spriteTmp.dRec.y -= camera->rect.y;
-		RenderSprite(&spriteTmp, renderer);
+		spr->dRec.x -= camera->rect.x;
+		spr->dRec.y -= camera->rect.y;
+		printf("%p\n", spr->tex.data);
+		RenderSprite(spr);
+		spr->dRec.x += camera->rect.x;
+		spr->dRec.y += camera->rect.y;
 	}
 }
 
@@ -54,6 +54,7 @@ static void InitSpriteData(Sprite *spr) {
 	spr->scale = (Vec2){1, 1};
 	spr->visible = true;
 	spr->colour = (SDL_Colour){0xff, 0xff, 0xff, 0xff};
+	spr->center = SPR_MIDDLE(spr);
 
 	// Set source rect and destination rect.
 	spr->sRec = (Rectangle){0, 0, spr->width, spr->height};

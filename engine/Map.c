@@ -191,15 +191,15 @@ bool GetObjectPropBool(char* filename, char* layerName, char* objectName, char* 
 
 static void RecordType(uint32_t tileType, uint32_t* flippedH, uint32_t* flippedV, uint32_t* rotated, Rectangle *rect, Map* map) {
 	// Get texture width and height
-	int texWidth, texHeight;
+	int texWidth = map->mapRenderTexture.w, texHeight = map->mapRenderTexture.h;
 	int firstgid = 0;
+
 	for (int i = 0; i < map->numTilesets; i++) {
 		if (tileType <= map->tileset[i].lastgid && tileType >= map->tileset[i].firstgid) {
 			firstgid = map->tileset[i].firstgid;
 			map->mapRenderTexture = map->tileset[i].texture;
 		}
 	}
-	SDL_QueryTexture(map->mapRenderTexture, NULL, NULL, &texWidth, &texHeight);
 
 	// Get tiles per row and column
 	int tileLengthX = texWidth / map->tileWidth;
@@ -252,11 +252,11 @@ static void RecordType(uint32_t tileType, uint32_t* flippedH, uint32_t* flippedV
 	return;
 }
 
-void RenderMap(Map* map, SDL_Renderer* renderer) {
-	RenderMapMod(map, &(Camera){0}, renderer);
+void RenderMap(Map* map) {
+	RenderMapMod(map, &(Camera){0});
 }
 
-void RenderMapMod(Map* map, Camera* camera, SDL_Renderer* renderer) {
+void RenderMapMod(Map* map, Camera* camera) {
 	uint32_t tileType = 0;
 	Rectangle src;
 	Rectangle dst;
@@ -271,12 +271,11 @@ void RenderMapMod(Map* map, Camera* camera, SDL_Renderer* renderer) {
 				// Recording foreground
 				tileType = map->mapFg[y][x];
 				RecordType(tileType, &flippedH, &flippedY, &rotated, &src, map);
-				DrawTextureEx(map->mapRenderTexture, &src, &(Rectangle){dst.x - camera->rect.x, dst.y - camera->rect.y, dst.w, dst.h}, rotated, &(SDL_Point){map->tileWidth / 2, map->tileHeight / 2}, flippedH | flippedY, renderer);
-
+				DrawTextureEx(&map->mapRenderTexture, &src, &(Rectangle){dst.x - camera->rect.x, dst.y - camera->rect.y, dst.w, dst.h}, rotated, &(Vec2){map->tileWidth / 2, map->tileHeight / 2}, flippedH | flippedY);
 				// Recording background
 				tileType = map->mapBg[y][x];
 				RecordType(tileType, &flippedH, &flippedY, &rotated, &src, map);
-				DrawTextureEx(map->mapRenderTexture, &src, &(Rectangle){dst.x - camera->rect.x, dst.y - camera->rect.y, dst.w, dst.h}, rotated, &(SDL_Point){map->tileWidth / 2, map->tileHeight / 2}, flippedH | flippedY, renderer);
+				DrawTextureEx(&map->mapRenderTexture, &src, &(Rectangle){dst.x - camera->rect.x, dst.y - camera->rect.y, dst.w, dst.h}, rotated, &(Vec2){map->tileWidth / 2, map->tileHeight / 2}, flippedH | flippedY);
 			}
 		}
 	}

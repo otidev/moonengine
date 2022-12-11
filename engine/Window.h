@@ -3,8 +3,6 @@
 
 #include "Include.h"
 
-extern Window* globalWindow;
-
 // Initialises a window (extended params).
 int InitWindowEx(Window* window, int width, int height, char* windowName, uint32_t flags);
 

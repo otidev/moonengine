@@ -11,10 +11,10 @@
 void PlayAnim(Sprite *spr, float updateTime);
 
 // Renders a sprite onto the screen
-void RenderSprite(Sprite *spr, SDL_Renderer* renderer);
+void RenderSprite(Sprite *spr);
 
 // Renders a sprite onto the screen in a camera
-void RenderSpriteMod(Sprite* spr, Camera* camera, SDL_Renderer* renderer);
+void RenderSpriteMod(Sprite* spr, Camera* camera);
 
 // Sets up a sprite.
 void InitSprite(Sprite *spr, int width, int height, char* textureFilename);

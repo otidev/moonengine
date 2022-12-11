@@ -7,8 +7,17 @@
 // Linear interpolation function
 float Lerp(float a, float b, float t);
 
+// Max function
+float Min(float a, float b);
+
+// Min function
+float Min(float a, float b);
+
+// Approach function
+float Approach(float a, float b, float t);
+
 // Smooth steping function
-float Smoothstep(float a, float b, float t);
+float Smoothstep(float t);
 
 // Returns sign of a number (-1 or 1)
 float Sign(float x);

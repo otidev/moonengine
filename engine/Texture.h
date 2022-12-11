@@ -7,8 +7,14 @@
 // Loads a texture from a file
 Bitmap LoadTexture(char* filename);
 
-// Loads a texture without a file
-Bitmap CreateTexture(uint32_t byteFormat, int textureAccess, int width, int height);
+// Creates a texture from scratch.
+Bitmap CreateTexture(int width, int height);
+
+// Creates a render target.
+Bitmap CreateRenderTarget(int width, int height);
+
+// Destroys (frees) a render target.
+void DestroyRenderTarget(Bitmap* bitmap);
 
 // Creates a texture from a surface.
 Bitmap CreateTextureFromSurface(SDL_Surface* surf);

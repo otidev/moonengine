@@ -5,48 +5,45 @@
 #include "Camera.h"
 
 // Clears a renderer
-void Clear(SDL_Colour colour, SDL_Renderer* renderer);
+void Clear(SDL_Colour colour);
 
 // Draws a rectangle
-void DrawRect(Rectangle rect, SDL_Colour colour, SDL_Renderer* renderer);
+void DrawRect(Rectangle rect, SDL_Colour colour);
 
 // Draws a rectangle in a camera
-void DrawRectMod(Rectangle rect, Camera* camera, SDL_Colour colour, SDL_Renderer* renderer);
+void DrawRectMod(Rectangle rect, Camera* camera, SDL_Colour colour);
 
 // Draws rectangle lines
-void DrawRectLines(Rectangle rect, SDL_Colour colour, SDL_Renderer* renderer);
+void DrawRectLines(Rectangle rect, SDL_Colour colour);
 
 // Draws rectangle lines in a camera
-void DrawRectLinesMod(Rectangle rect, Camera* camera, SDL_Colour colour, SDL_Renderer* renderer);
+void DrawRectLinesMod(Rectangle rect, Camera* camera, SDL_Colour colour);
 
 // Draws a line
-void DrawLine(Line line, SDL_Renderer* renderer);
+void DrawLine(Line line, SDL_Colour colour);
 
 // Draws a triangle
-void DrawTriangle(Tri* tri, SDL_Renderer* renderer);
+void DrawTriangle(Tri* tri, SDL_Colour colour);
 
 // Draws a point
-void DrawPoint(Vec2 point, SDL_Renderer* renderer);
+void DrawPoint(Vec2 point, SDL_Colour colour);
 
 // Draws a point in a camera
-void DrawPointMod(Vec2 point, Camera* camera, SDL_Renderer* renderer);
+void DrawPointMod(Vec2 point, SDL_Colour colour, Camera* camera);
 
 // Renders texture
-void DrawTexture(Bitmap tex, Rectangle *srcRect, Rectangle *dstRect, SDL_Renderer* renderer);
+void DrawTexture(Bitmap* image, Rectangle* srcRect, Rectangle* dstRect);
 
 // Renders texture (extended parameters)
-void DrawTextureEx(Bitmap tex, Rectangle *srcRect, Rectangle *dstRect, double rotAngle, SDL_Point *centre, SDL_RendererFlip flip, SDL_Renderer* renderer);
+void DrawTextureEx(Bitmap* image, Rectangle* srcRect, Rectangle* dstRect, double rotAngle, Vec2* centre, SDL_RendererFlip flip);
 
 // Renders the backbuffer into the frontbuffer
-void RenderBuffer(SDL_Renderer* renderer);
+void RenderBuffer();
 
 // Set target for rendering textures on
-void SetRenderTarget(Bitmap renderTarget, SDL_Renderer* renderer);
+void SetRenderTarget(Bitmap* renderTarget);
 
 // Set a blending mode (for shapes)
-void SetBlendMode(SDL_BlendMode blendMode, SDL_Renderer* renderer);
-
-// Sets a texture colour (for rendering)
-void SetTextureColour(Bitmap tex, SDL_Colour colour, SDL_Renderer* renderer);
+void SetBlendMode(GPU_BlendPresetEnum blendMode);
 
 #endif

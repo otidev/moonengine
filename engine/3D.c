@@ -92,6 +92,6 @@ void something(SDL_Renderer* renderer) {
 		triangle.firstVert = (Vec2){tris[0].x, tris[0].y};
 		triangle.secondVert = (Vec2){tris[1].x, tris[1].y};
 		triangle.thirdVert = (Vec2){tris[2].x, tris[2].y};
-		DrawTriangle(&triangle, renderer); 
+		DrawTriangle(&triangle, (SDL_Colour){0, 0, 0, 0});
 	}
 }

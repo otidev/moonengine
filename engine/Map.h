@@ -55,10 +55,10 @@ cJSON* GetObject(cJSON* root, char* layerName, char* objectName);
 void InitMap(Map* map, char* mapDir, char* filename, int tileWidth, int tileHeight);
 
 // Renders the map that has been created.
-void RenderMap(Map* map, SDL_Renderer* renderer);
+void RenderMap(Map* map);
 
 // Renders a map with an offset.
-void RenderMapMod(Map* map, Camera* camera, SDL_Renderer* renderer);
+void RenderMapMod(Map* map, Camera* camera);
 
 // Returns collision between a map and a rectangle.
 bool MapCollision(Map* map, Rectangle rect, int objType, RectSide side);

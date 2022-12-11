@@ -6,13 +6,17 @@
 #include "Input.h"
 
 Window* globalWindow;
+GPU_Target* globalTarget;
 
 int InitWindowEx(Window* window, int width, int height, char* windowName, uint32_t flags) {
 	// Init SDL
-	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_JOYSTICK) < 0) {
-		fprintf(stderr, "Man... SDL_INIT didn't work :( ");
+	GPU_SetInitWindow(SDL_GetWindowID(window->window));
+	window->renderer = GPU_Init(width, height, flags);
+	if (!window->renderer) {
+		fprintf(stderr, "\033[1mError\033[0m: Couldn't initialize SDL and/or SDL_GPU: %s\n", SDL_GetError());
 		return EXIT_FAILURE;
 	}
+	SDL_SetWindowTitle(window->window, windowName);
 
 	window->input = malloc(sizeof(Input));
 
@@ -26,10 +30,6 @@ int InitWindowEx(Window* window, int width, int height, char* windowName, uint32
 	// Window stuff
 	window->width = width;
 	window->height = height;
-	window->window = SDL_CreateWindow(windowName, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, window->width, window->height, flags);
-	window->renderer = SDL_CreateRenderer(window->window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-
-	SDL_SetRenderDrawColor(window->renderer, 0x20, 0x3c, 0x56, 0xff);
 
 	int whocares = IMG_INIT_PNG;
 	if ((!IMG_Init(whocares)) & whocares) {
@@ -49,6 +49,7 @@ int InitWindowEx(Window* window, int width, int height, char* windowName, uint32
 	window->gameRuns = true;
 	
 	globalWindow = window;
+	globalTarget = window->renderer;
 	return EXIT_SUCCESS;
 }
 
@@ -66,12 +67,12 @@ void End() {
 	FreeSoundArray((Sound**)globalWindow->soundArray, SOUNDARRAYSIZE);
 
 	SDL_DestroyWindow(globalWindow->window); // what
-	SDL_DestroyRenderer(globalWindow->renderer);
 
 	// Quit SDL and derivs
 	Mix_Quit();
 	IMG_Quit();
 	TTF_Quit();
+	GPU_Quit();
 	SDL_Quit();
 }
 

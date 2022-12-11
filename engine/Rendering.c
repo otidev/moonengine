@@ -1,101 +1,65 @@
 #include "Rendering.h"
 
-void Clear(SDL_Colour colour, SDL_Renderer* renderer) {
-	// Put this in its own function
-	char r, g, b, a;
-	r = colour.r;
-	g = colour.g;
-	b = colour.b;
-	a = colour.a;
-	
-	SDL_SetRenderDrawColor(renderer, r, g, b, a);
-	SDL_RenderClear(renderer);
+void Clear(SDL_Colour colour) {
+	GPU_ClearColor(globalTarget, colour);
 }
 
-void DrawRect(Rectangle rect, SDL_Colour colour, SDL_Renderer* renderer) {
-	// Get colour values.
-	char r, g, b, a;
-	r = colour.r;
-	g = colour.g;
-	b = colour.b;
-	a = colour.a;
-
-	// Set render colour, draw, then reset
-	SDL_SetRenderDrawColor(renderer, r, g, b, a);
-	SDL_RenderFillRect(renderer, &rect);
-	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+void DrawRect(Rectangle rect, SDL_Colour colour) {
+	GPU_RectangleFilled(globalTarget, rect.x, rect.y, rect.x + rect.w, rect.y + rect.h, colour);
 }
 
-void DrawRectMod(Rectangle rect, Camera* camera, SDL_Colour colour, SDL_Renderer* renderer) {
+void DrawRectMod(Rectangle rect, Camera* camera, SDL_Colour colour) {
 	if (RectangleInCamera(camera, rect))
-		DrawRect((Rectangle){rect.x - camera->rect.x, rect.y - camera->rect.y, rect.w, rect.h}, colour, renderer);
+		DrawRect((Rectangle){rect.x - camera->rect.x, rect.y - camera->rect.y, rect.w, rect.h}, colour);
 }
 
-void DrawRectLines(Rectangle rect, SDL_Colour colour, SDL_Renderer* renderer) {
-	char r, g, b, a;
-	r = colour.r;
-	g = colour.g;
-	b = colour.b;
-	a = colour.a;
-
-	SDL_SetRenderDrawColor(renderer, r, g, b, a);
-	SDL_RenderDrawRect(renderer, &rect);
-	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+void DrawRectLines(Rectangle rect, SDL_Colour colour) {
+	GPU_Rectangle(globalTarget, rect.x, rect.y, rect.x + rect.w, rect.y + rect.h, colour);
 }
 
-void DrawRectLinesMod(Rectangle rect, Camera* camera, SDL_Colour colour, SDL_Renderer* renderer) {
+void DrawRectLinesMod(Rectangle rect, Camera* camera, SDL_Colour colour) {
 	if (RectangleInCamera(camera, rect))
-		DrawRectLines((Rectangle){rect.x - camera->rect.x, rect.y - camera->rect.y, rect.w, rect.h}, colour, renderer);
+		DrawRectLines((Rectangle){rect.x - camera->rect.x, rect.y - camera->rect.y, rect.w, rect.h}, colour);
 }
 
-void DrawLine(Line line, SDL_Renderer* renderer) {
-	SDL_RenderDrawLine(renderer, line.startPoint.x, line.startPoint.y, line.endPoint.x, line.endPoint.y);
+void DrawLine(Line line, SDL_Colour colour) {
+	GPU_Line(globalTarget, line.startPoint.x, line.endPoint.y, line.endPoint.x, line.endPoint.y, colour);
 }
 
-void DrawTriangle(Tri* tri, SDL_Renderer* renderer) {
-	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
-	SDL_RenderDrawLine(renderer, tri->firstVert.x, tri->firstVert.y, tri->secondVert.x, tri->secondVert.y);
-	SDL_RenderDrawLine(renderer, tri->secondVert.x, tri->secondVert.y, tri->thirdVert.x, tri->thirdVert.y);
-	SDL_RenderDrawLine(renderer, tri->thirdVert.x, tri->thirdVert.y, tri->firstVert.x, tri->firstVert.y);
+void DrawTriangle(Tri* tri, SDL_Colour colour) {
+	DrawLine((Line){tri->firstVert, tri->secondVert}, colour);
+	DrawLine((Line){tri->secondVert, tri->thirdVert}, colour);
+	DrawLine((Line){tri->thirdVert, tri->firstVert}, colour);
 }
 
-void DrawPoint(Vec2 point, SDL_Renderer* renderer) {
-	SDL_RenderDrawPoint(renderer, point.x, point.y);
+void DrawPoint(Vec2 point, SDL_Colour colour) {
+	GPU_Pixel(globalTarget, point.x, point.y, colour);
 }
 
-void DrawPointMod(Vec2 point, Camera* camera, SDL_Renderer* renderer) {
+void DrawPointMod(Vec2 point, SDL_Colour colour, Camera* camera) {
 	if (PointInCamera(camera, point))
-	DrawPoint((Vec2){point.x - camera->rect.x, point.y - camera->rect.y}, renderer);
+	DrawPoint((Vec2){point.x - camera->rect.x, point.y - camera->rect.y}, colour);
 }
 
-void DrawTexture(SDL_Texture *tex, Rectangle *srcRect, Rectangle *dstRect, SDL_Renderer* renderer) {
-	// If we can't render, something went wrong.
-	if (SDL_RenderCopy(renderer, tex, srcRect, dstRect) != 0)
-		fprintf(stderr, "\033[1mRendering error\033[0m: %s", SDL_GetError());
+void DrawTexture(Bitmap* image, Rectangle* srcRect, Rectangle* dstRect) {
+	DrawTextureEx(image, srcRect, dstRect, 0, &(Vec2){image->w / 2, image->h / 2}, 0);
 }
 
-void DrawTextureEx(SDL_Texture *tex, Rectangle *srcRect, Rectangle *dstRect, double rotAngle, SDL_Point *centre, SDL_RendererFlip flip, SDL_Renderer* renderer) {
-	if (SDL_RenderCopyEx(renderer, tex, srcRect, dstRect, rotAngle, centre, flip) != 0)
-		fprintf(stderr, "\033[1mRendering error\033[0m: %s", SDL_GetError());
+void DrawTextureEx(Bitmap* image, Rectangle* srcRect, Rectangle* dstRect, double rotAngle, Vec2* centre, SDL_RendererFlip flip) {
+	GPU_BlitRectX(image, srcRect, globalTarget, dstRect, rotAngle, centre->x, centre->y, flip);
 }
 
-void RenderBuffer(SDL_Renderer* renderer) {
-	SDL_RenderPresent(renderer);
+void RenderBuffer() {
+	GPU_Flip(globalTarget);
 }
 
-void SetRenderTarget(SDL_Texture* renderTarget, SDL_Renderer* renderer) {
-	SDL_SetRenderTarget(renderer, renderTarget);
+void SetRenderTarget(Bitmap* renderTarget) {
+	if (renderTarget != NULL) {
+		globalTarget = renderTarget->target;
+	} else
+		globalTarget = globalWindow->renderer;
 }
 
-void SetBlendMode(SDL_BlendMode blendMode, SDL_Renderer* renderer) {
-	SDL_SetRenderDrawBlendMode(renderer, blendMode);
-}
-
-void SetTextureColour(SDL_Texture* tex, SDL_Colour colour, SDL_Renderer* renderer) {
-	char r, g, b;
-	r = colour.r;
-	g = colour.g;
-	b = colour.b;
-
-	SDL_SetTextureColorMod(tex, r, g, b);
+void SetBlendMode(GPU_BlendPresetEnum blendMode) {
+	GPU_SetShapeBlendMode(blendMode);
 }

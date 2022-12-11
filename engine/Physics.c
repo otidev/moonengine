@@ -4,9 +4,20 @@ float Lerp(float a, float b, float t) {
 	return a + t * (b - a);
 }
 
-float Smoothstep(float a, float b, float t) {
-	float scaled = (3 * (t * t)) - (2 * (t * t * t));
-	return Lerp(a, b, scaled);
+float Min(float a, float b) {
+	return (a > b) ? b : a;
+}
+
+float Max(float a, float b) {
+	return (a > b) ? a : b;
+}
+
+float Approach(float a, float b, float t) {
+	return (a < b) ? Min(a + t, b) : Max(a - t, b);
+}
+
+float Smoothstep(float t) {
+	return Lerp(t * t, 1 - (1 - t) * (1 - t), t);
 }
 
 float Sign(float x) {
