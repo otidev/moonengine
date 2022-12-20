@@ -10,7 +10,6 @@ Bitmap LoadTexture(char* filename) {
 
 	AddToArray(globalWindow->textureArray, tex, TEXARRAYSIZE);
 	GPU_SetImageFilter(tex, GPU_FILTER_NEAREST);
-	printf("ha");
 	return *tex;
 }
 

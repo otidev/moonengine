@@ -41,10 +41,11 @@ void RenderSprite(Sprite* spr) {
 void  RenderSpriteMod(Sprite* spr, Camera* camera) {
 	// TODO: Fix this, because it's broken :<(=-=:
 	if (RectangleInCamera(camera, spr->dRec)) {
+		// Move into relative camera position
 		spr->dRec.x -= camera->rect.x;
 		spr->dRec.y -= camera->rect.y;
-		printf("%p\n", spr->tex.data);
 		RenderSprite(spr);
+		// Move out
 		spr->dRec.x += camera->rect.x;
 		spr->dRec.y += camera->rect.y;
 	}
