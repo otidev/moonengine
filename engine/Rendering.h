@@ -7,11 +7,23 @@
 // Clears a renderer
 void Clear(SDL_Colour colour);
 
+// Draws a rounded rectangle
+void DrawRectR(Rectangle rect, float radius, SDL_Colour colour);
+
+// Draws a rounded rectangle in a camera
+void DrawRectRMod(Rectangle rect, float radius, Camera* camera, SDL_Colour colour);
+
 // Draws a rectangle
 void DrawRect(Rectangle rect, SDL_Colour colour);
 
 // Draws a rectangle in a camera
 void DrawRectMod(Rectangle rect, Camera* camera, SDL_Colour colour);
+
+// Draws rounded rectangle lines
+void DrawRectLinesR(Rectangle rect, float radius, SDL_Colour colour);
+
+// Draws rounded rectangle lines in a camera
+void DrawRectLinesRMod(Rectangle rect, float radius, Camera* camera, SDL_Colour colour);
 
 // Draws rectangle lines
 void DrawRectLines(Rectangle rect, SDL_Colour colour);

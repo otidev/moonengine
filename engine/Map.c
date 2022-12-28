@@ -113,6 +113,7 @@ void InitMap(Map* map, char* mapDir, char* filename, int tileWidth, int tileHeig
 }
 
 cJSON* GetObject(cJSON* root, char* layerName, char* objectName) {
+	// NOTE: the root has to be intialized before use.
 	const char *errorPtr = cJSON_GetErrorPtr();
 	if (errorPtr != NULL) {
 		fprintf(stderr, "\033[1Error at:\033[0 %s", errorPtr);
@@ -178,7 +179,7 @@ bool GetObjectPropBool(char* filename, char* layerName, char* objectName, char* 
 		if (
 		strcmp(cJSON_GetObjectItem(objectProp, "name")->valuestring, propertyName) == 0
 		&& 
-		strcmp(cJSON_GetObjectItem(objectProp, "type")->valuestring, "bool")
+		strcmp(cJSON_GetObjectItem(objectProp, "type")->valuestring, "bool") == 0
 		) {
 			objectPropBool = cJSON_IsTrue(cJSON_GetObjectItem(objectProp, "value"));
 			}
@@ -187,6 +188,41 @@ bool GetObjectPropBool(char* filename, char* layerName, char* objectName, char* 
 
 	cJSON_Delete(root);
 	return objectPropBool;
+}
+
+char* GetObjectPropStr(char* filename, char* layerName, char* objectName, char* propertyName) {
+	cJSON* root = GetRoot(filename);
+	cJSON* object = GetObject(root, layerName, objectName);
+	char* objectPropStr;
+
+	cJSON* objectProps = cJSON_GetObjectItem(object, "properties");
+
+	for (int i = 0; i < cJSON_GetArraySize(objectProps); i++) {
+		cJSON* objectProp = cJSON_GetArrayItem(objectProps, i);
+		if (
+		strcmp(cJSON_GetObjectItem(objectProp, "name")->valuestring, propertyName) == 0
+		&& 
+		strcmp(cJSON_GetObjectItem(objectProp, "type")->valuestring, "string") == 0
+		) {
+			objectPropStr = cJSON_GetObjectItem(objectProp, "value")->valuestring;
+			}
+	}
+
+	if (!objectPropStr) {
+		fprintf(stderr, "\033[1mError\033[0m: There was no string attached to '%s'.", objectName);
+		return NULL;
+	}
+
+	char objectPropArray[strlen(objectPropStr) + 1];
+	char* objectPropStrLit;
+	
+	snprintf(objectPropArray, strlen(objectPropStr) + 1, "%s", objectPropStr);
+	objectPropStrLit = objectPropArray;
+	printf(objectPropArray);
+
+
+	cJSON_Delete(root);
+	return objectPropStrLit;
 }
 
 static void RecordType(uint32_t tileType, uint32_t* flippedH, uint32_t* flippedV, uint32_t* rotated, Rectangle *rect, Map* map) {
@@ -203,9 +239,6 @@ static void RecordType(uint32_t tileType, uint32_t* flippedH, uint32_t* flippedV
 
 	// Get tiles per row and column
 	int tileLengthX = texWidth / map->tileWidth;
-	int tileLengthY = texHeight / map->tileHeight;
-	// Get number of tiles
-	int tileCount = tileLengthX * tileLengthY;
 	int i = firstgid, y = 0, x = 0;
 
 	uint32_t parse = tileType;

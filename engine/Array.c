@@ -10,11 +10,13 @@ void MakeArray(void* arrayPtr[], int arraySize) {
 }
 
 void AddToArray(void* arrayPtr[], void* pointer, int arraySize) {
-
 	if (arraySize == 0)
 		fprintf(stderr, "\033[1mError\033[0m: No size for arrayptr.");
 	
-	int i;
+	// From here on out, the function finds a null spot to write in.
+	// NOTE: This is the *first* null spot.
+
+	int i; 
 	for (i = 0; i < arraySize; i++) {
 		if (arrayPtr[i] == NULL)
 			break;
@@ -30,6 +32,8 @@ int FindPointerArray(void* arrayPtr[], void* pointer, int arraySize) {
 	if (arraySize == 0)
 		fprintf(stderr, "\033[1mError\033[0m: No size for arrayptr.");
 	
+	// Finds if a pointer is in an array, and what spot it's in.
+
 	int i = 0;
 	while (arrayPtr[i] != pointer)
 		i++;

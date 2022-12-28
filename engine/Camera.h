@@ -9,7 +9,7 @@ void InitCamera(Camera* camera, int width, int height);
 // Adjusts camera if out of its bounds
 void CheckCameraBounds(Camera* camera);
 
-// Sets bounds, then checks camera bounds
+// Sets bounds, then checks camera itself.
 void CheckCameraBoundsExt(Camera* camera, Rectangle* rec);
 
 // Sets a camera scale

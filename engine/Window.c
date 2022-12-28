@@ -10,13 +10,21 @@ GPU_Target* globalTarget;
 
 int InitWindowEx(Window* window, int width, int height, char* windowName, uint32_t flags) {
 	// Init SDL
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_JOYSTICK) < 0) {
+		fprintf(stderr, "Man... SDL_INIT didn't work :( ");
+		return EXIT_FAILURE;
+	}
+	// Window stuff
+	window->width = width;
+	window->height = height;
+	window->window = SDL_CreateWindow(windowName, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, window->width, window->height, flags | SDL_WINDOW_OPENGL);
+
 	GPU_SetInitWindow(SDL_GetWindowID(window->window));
 	window->renderer = GPU_Init(width, height, flags);
 	if (!window->renderer) {
 		fprintf(stderr, "\033[1mError\033[0m: Couldn't initialize SDL and/or SDL_GPU: %s\n", SDL_GetError());
 		return EXIT_FAILURE;
 	}
-	SDL_SetWindowTitle(window->window, windowName);
 
 	window->input = malloc(sizeof(Input));
 
@@ -27,12 +35,8 @@ int InitWindowEx(Window* window, int width, int height, char* windowName, uint32
 	MakeArray(window->musicArray, MUSICARRAYSIZE);
 	MakeArray(window->soundArray, SOUNDARRAYSIZE);
 
-	// Window stuff
-	window->width = width;
-	window->height = height;
-
-	int whocares = IMG_INIT_PNG;
-	if ((!IMG_Init(whocares)) & whocares) {
+	int imageSelection = IMG_INIT_PNG;
+	if ((!IMG_Init(imageSelection)) & imageSelection) {
 		fprintf(stderr, "\033[1mError\033[0m: Couldn't initialize SDL_IMG: %s\n", SDL_GetError());
 	}
 

@@ -2,21 +2,23 @@
 #include "Physics.h"
 #include "Camera.h"
 
-float timer = 0;
-// Only used here to do frame calulations.
-int frame = 0;
-
 void PlayAnim(Sprite *spr, float updateTime) {
+	// Set timer limit (and uses the least amount of code to do so).
+	if (spr->timer.limit == 0)
+		spr->timer.limit = updateTime;
+
 	// Geting full width of texture
 	int sizew = spr->tex.w;
 	// Adds deltatime to the timer.
-	timer += GetDelta();
+	IncTimer(&spr->timer);
 
-	if (timer >= updateTime) {
+	if (spr->timer.isFinished) {
 		// Add the width of a frame to the x value.
 		spr->sRec.x += (sizew / spr->frames);
-		// Reset the timer to 0.
-		timer = 0;
+		
+		// Reset the timer.
+		SetTimer(&spr->timer, updateTime);
+
 		if (spr->sRec.x == sizew) {
 			// Reset x to 0.
 			spr->sRec.x = 0;
@@ -60,6 +62,8 @@ static void InitSpriteData(Sprite *spr) {
 	// Set source rect and destination rect.
 	spr->sRec = (Rectangle){0, 0, spr->width, spr->height};
 	spr->dRec = (Rectangle){0, 0, spr->width / spr->scale.x, spr->height / spr->scale.y};
+
+	SetTimer(&spr->timer, 0);
 
 	spr->facingRight = true;
 }

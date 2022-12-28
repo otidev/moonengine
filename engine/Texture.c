@@ -6,10 +6,9 @@ int baseArraySize;
 Bitmap LoadTexture(char* filename) {
 	// Load the image into a surface
 	Bitmap* tex = GPU_LoadImage(filename);
-
+	GPU_SetImageFilter(tex, GPU_FILTER_NEAREST);
 
 	AddToArray(globalWindow->textureArray, tex, TEXARRAYSIZE);
-	GPU_SetImageFilter(tex, GPU_FILTER_NEAREST);
 	return *tex;
 }
 

@@ -66,6 +66,14 @@ typedef struct Hitbox {
 // A struct the same as Hitbox, but a different name to avoid confusion. 
 typedef struct Hitbox Hurtbox;
 
+typedef struct Timer {
+	float count;
+	// If the limit is 0, the timer will go on forever.
+	float limit;
+	// Turns true when the counter is finished.
+	bool isFinished;
+} Timer;
+
 // A sprite struct type for a sprite's texture and their surface, the both the source and destination rectangles. 
 typedef struct Sprite {
 	// Texture
@@ -91,9 +99,12 @@ typedef struct Sprite {
 	bool visible;
 	// Colour
 	SDL_Colour colour;
+	// The timer for the sprite animation (handle with care!)
+	Timer timer;
 } Sprite;
 
 #define SPR_MIDDLE(spr) (Vec2){spr->width / 2, spr->height / 2};
+#define SPR_MIDDLE_LIT(spr) (Vec2){spr.width / 2, spr.height / 2};
 
 typedef enum GamepadButtons {
 	// PAD_RIGHT_ is for the ABXY or the PS5 stuff
@@ -162,6 +173,43 @@ typedef struct Window {
 extern Window* globalWindow;
 extern GPU_Target* globalTarget;
 
+typedef struct Tileset {
+	// First/last GID number
+	int firstgid;
+	int lastgid;
+	// Texture for rendering
+	Bitmap texture;
+	// Array of tile groups (in order of gid)
+	char* tileGroup[1024];
+} Tileset;
+
+typedef struct Map {
+	char filename[1024];
+	// Width of map
+	int width;
+	// Height of map
+	int height;
+	// Texture used for rendering
+	Bitmap mapRenderTexture;
+
+	// Tilemap data (fg and bg)
+	uint32_t mapFg[1000][1000];
+	uint32_t mapBg[1000][1000];
+
+	// Tile width and height
+	int tileWidth;
+	int tileHeight;
+
+	// Tilesets
+	Tileset tileset[128];
+	int numTilesets;
+
+	char mapColl[1000][1000];
+	// Rectangle for map collisions
+	Rectangle collisionRect;
+} Map;
+
+
 // An entity struct type containing a hit/hurtbox, velocity, positioning, a sprite, etc.
 typedef struct Entity {
 	// Hitbox
@@ -170,7 +218,7 @@ typedef struct Entity {
 	Hurtbox hurt;
 	// Speed vector
 	Vec2 speed;
-	// Position vector
+	// Position vector (you don't need to use this if you have a sprite)
 	Vec2 pos;
 } Entity;
 
@@ -203,10 +251,13 @@ typedef struct Sound {
 } Sound;
 
 typedef struct Camera {
+	// The view rectangle of the camera
 	Rectangle rect;
+	// Original width and height of camera
 	Rectangle orig;
 	Rectangle bounds;
 	Vec2 scale;
+	// Camera is being used for sth.
 	bool specialCase;
 } Camera;
 

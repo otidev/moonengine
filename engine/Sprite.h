@@ -5,6 +5,7 @@
 #include "Include.h"
 #include "Texture.h"
 #include "Camera.h"
+#include "Timer.h"
 #include "Rendering.h"
 
 // Handles animation.

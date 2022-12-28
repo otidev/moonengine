@@ -4,8 +4,17 @@ void Clear(SDL_Colour colour) {
 	GPU_ClearColor(globalTarget, colour);
 }
 
+void DrawRectR(Rectangle rect, float radius, SDL_Colour colour) {
+	GPU_RectangleRoundFilled2(globalTarget, rect, radius, colour);
+}
+
+void DrawRectRMod(Rectangle rect, float radius, Camera* camera, SDL_Colour colour) {
+	if (RectangleInCamera(camera, rect))
+		DrawRectR((Rectangle){rect.x - camera->rect.x, rect.y - camera->rect.y, rect.w, rect.h}, radius, colour);
+}
+
 void DrawRect(Rectangle rect, SDL_Colour colour) {
-	GPU_RectangleFilled(globalTarget, rect.x, rect.y, rect.x + rect.w, rect.y + rect.h, colour);
+	GPU_RectangleFilled2(globalTarget, rect, colour);
 }
 
 void DrawRectMod(Rectangle rect, Camera* camera, SDL_Colour colour) {
@@ -13,8 +22,17 @@ void DrawRectMod(Rectangle rect, Camera* camera, SDL_Colour colour) {
 		DrawRect((Rectangle){rect.x - camera->rect.x, rect.y - camera->rect.y, rect.w, rect.h}, colour);
 }
 
+void DrawRectLinesR(Rectangle rect, float radius, SDL_Colour colour) {
+	GPU_RectangleRound2(globalTarget, rect, radius, colour);
+}
+
+void DrawRectLinesRMod(Rectangle rect, float radius, Camera* camera, SDL_Colour colour) {
+	if (RectangleInCamera(camera, rect))
+		DrawRectLinesR((Rectangle){rect.x - camera->rect.x, rect.y - camera->rect.y, rect.w, rect.h}, radius, colour);
+}
+
 void DrawRectLines(Rectangle rect, SDL_Colour colour) {
-	GPU_Rectangle(globalTarget, rect.x, rect.y, rect.x + rect.w, rect.y + rect.h, colour);
+	GPU_Rectangle2(globalTarget, rect, colour);
 }
 
 void DrawRectLinesMod(Rectangle rect, Camera* camera, SDL_Colour colour) {

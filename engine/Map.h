@@ -9,42 +9,6 @@
 #include "Camera.h"
 #include "cJSON.h"
 
-typedef struct Tileset {
-	// First/last GID number
-	int firstgid;
-	int lastgid;
-	// Texture for rendering
-	Bitmap texture;
-	// Array of tile groups (in order of gid)
-	char* tileGroup[1024];
-} Tileset;
-
-typedef struct Map {
-	char filename[1024];
-	// Width of map
-	int width;
-	// Height of map
-	int height;
-	// Texture used for rendering
-	Bitmap mapRenderTexture;
-
-	// Tilemap data (fg and bg)
-	uint32_t mapFg[1000][1000];
-	uint32_t mapBg[1000][1000];
-
-	// Tile width and height
-	int tileWidth;
-	int tileHeight;
-
-	// Tilesets
-	Tileset tileset[128];
-	int numTilesets;
-
-	char mapColl[1000][1000];
-	// Rectangle for map collisions
-	Rectangle collisionRect;
-} Map;
-
 // Returns the root of a json array
 cJSON* GetRoot(char* filename);
 
@@ -72,7 +36,10 @@ bool MapCollisionTile(Map* map, Rectangle rect, int* tileType, RectSide side);
 // Get the position of an object.
 Vec2 GetObjectPos(char* filename, char* layerName, char* objectName);
 
-// Get a bool property of an object
+// Get a bool-type property of an object
 bool GetObjectPropBool(char* filename, char* layerName, char* objectName, char* propertyName);
+
+// Get a string-type property of an object
+char* GetObjectPropStr(char* filename, char* layerName, char* objectName, char* propertyName);
 
 #endif
