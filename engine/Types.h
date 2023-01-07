@@ -233,6 +233,22 @@ typedef struct Font {
 	Rectangle dRec;
 } Font;
 
+typedef struct Button {
+	char* text;
+	Rectangle rect;
+	Font font;
+	bool clicked;
+} Button;
+
+typedef struct Menu {
+	// Array of button pointers
+	Button** buttons;
+	int numButtons;
+	char* text;
+	Font font;
+	Rectangle rect;
+} Menu;
+
 typedef enum RectSide {
 	NONE = 0,
 	LEFT,

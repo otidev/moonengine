@@ -46,7 +46,7 @@ void SetSoundVolume(int volume) {
 }
 
 void SetMusicVolume(int volume) {
-	Mix_VolumeMusic(volume);
+	Mix_VolumeMusic((volume / 100) * 128);
 }
 
 static void FreeMusic(Music* music) {
