@@ -25,7 +25,7 @@ int main() {
 	Window window;
 	InitWindow(&window, 1024, 720, "Moon");
 	while (WindowIsOpen(60)) {
-		printf("Window open, running at 60 fps!");
+		printf("Window open, running at 60 fps!\n");
 	}
 	End(window);
 	return 0;
@@ -45,7 +45,7 @@ To compile Moon, you need:
 - SDL2main (on Windows)
 
 ### If you're running Windows
-Aside from needing SDL2main, you'd need to put the include library fake statics in `lib/` and headers in `lib/include`. The `.dll`s go to the same directory as the exectuable (like normal; in example case `bin/`).
+Extract all of the files from the Github repos, them leave them as is. You'll need the original in the CMake.
 
 ## Photos
 ![Photo of Blit, my game](Blit.png)
