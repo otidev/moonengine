@@ -45,7 +45,7 @@ To compile Moon, you need:
 - SDL2main (on Windows)
 
 ### If you're running Windows
-Extract all of the files from the Github repos, them leave them as is. You'll need the original in the CMake.
+Extract all of the files from the Github repos, them leave them as is. You'll need the original folders in the CMake.
 
 ## Photos
 ![Photo of Blit, my game](Blit.png)
