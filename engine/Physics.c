@@ -75,13 +75,13 @@ void RecordVels(Vec2 vec, Vec2 *pos) {
 }
 
 void RectToVec2(Vec2 vec, Rectangle *rect) {
-	rect->x = (int)vec.x;
-	rect->y = (int)vec.y;
+	rect->x = vec.x;
+	rect->y = vec.y;
 }
 
 void Vec2ToRect(Rectangle rect, Vec2 *vec) {
-	vec->x = (float)rect.x;
-	vec->y = (float)rect.y;
+	vec->x = rect.x;
+	vec->y = rect.y;
 }
 
 bool Vec2IsTo(Vec2* a, Vec2* b) {

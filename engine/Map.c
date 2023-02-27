@@ -218,7 +218,6 @@ char* GetObjectPropStr(char* filename, char* layerName, char* objectName, char* 
 	
 	snprintf(objectPropArray, strlen(objectPropStr) + 1, "%s", objectPropStr);
 	objectPropStrLit = objectPropArray;
-	printf(objectPropArray);
 
 
 	cJSON_Delete(root);
@@ -227,7 +226,7 @@ char* GetObjectPropStr(char* filename, char* layerName, char* objectName, char* 
 
 static void RecordType(uint32_t tileType, uint32_t* flippedH, uint32_t* flippedV, uint32_t* rotated, Rectangle *rect, Map* map) {
 	// Get texture width and height
-	int texWidth = map->mapRenderTexture.w, texHeight = map->mapRenderTexture.h;
+	int texWidth = map->mapRenderTexture.w;
 	int firstgid = 0;
 
 	for (int i = 0; i < map->numTilesets; i++) {

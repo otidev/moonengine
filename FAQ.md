@@ -11,6 +11,3 @@ If you can't find what you are looking for, you can make it! Add it to the repo 
 
 ## NO DOCS!!!
 Sorry, the current documentation (if you can call it that), is really simple. I might add Doxygen to it, though!
-
-## Why is there a Makefile?
-As of now, the CMake doesn't work on Linux, and I am keeping it [the Makefile] there so that someone could still find a way to compile it. (I am working on the CMake!) 

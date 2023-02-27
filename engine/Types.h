@@ -57,7 +57,7 @@ typedef struct Tri3 {
 
 // A hitbox struct.
 typedef struct Hitbox {
-	Vec2 pos;
+	Vec2 offsetCenter;
 	// Collidable flag
 	bool collidable;
 	Rectangle box;

@@ -15,5 +15,6 @@
 #include "Map.h"
 #include "3D.h"
 #include "Time.h"
+#include "HBox.h"
 
 #endif

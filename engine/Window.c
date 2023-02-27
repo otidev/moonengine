@@ -126,12 +126,13 @@ static void HandleEvents() {
 			case SDL_JOYBUTTONUP:
 				globalWindow->input->controllerButton[globalWindow->event.jbutton.button] = false;
 				break;
-			case SDL_MOUSEMOTION:
+			case SDL_MOUSEMOTION: {
 				int x, y;
 				SDL_GetMouseState(&x, &y);
 				globalWindow->input->mousePos.x = x;
 				globalWindow->input->mousePos.y = y;
 				break;
+			}
 			case SDL_MOUSEBUTTONDOWN:
 				globalWindow->input->mouseButton[globalWindow->event.button.button - 1] = true;
 				break;

@@ -17,7 +17,7 @@ void RenderSprite(Sprite *spr);
 // Renders a sprite onto the screen in a camera
 void RenderSpriteMod(Sprite* spr, Camera* camera);
 
-// Sets up a sprite.
+// Sets up a sprite (width and height are for frames).
 void InitSprite(Sprite *spr, int width, int height, char* textureFilename);
 
 // Sets up a sprite without a source texture attached

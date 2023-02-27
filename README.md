@@ -15,7 +15,7 @@ Some features of the engine include:
 
 ## Questions (and stuff)
 
-![Go here!](FAQ.md)
+[Go here!](FAQ.md)
 
 ## Example
 Plugging these 10 lines of code into a working environment will give a blank window:
