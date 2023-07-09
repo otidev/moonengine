@@ -41,7 +41,7 @@ Vec2 CameraOffset(Camera* camera) {
 }
 
 bool RectangleInCamera(Camera* camera, Rectangle rec) {
-	if (RectangleCollide(camera->rect, rec) || !camera)
+	if (camera != NULL && RectangleCollide(camera->rect, rec))
 		return true;
 	else
 		return false;

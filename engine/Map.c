@@ -10,7 +10,7 @@ cJSON* GetRoot(char* filename) {
 	fseek(file, 0l, SEEK_END);
 	fileSize = ftell(file);
 	fseek(file, 0l, SEEK_SET);
-	
+
 	// Put it in a buffer.
 	char fileBuf[fileSize];
 	memset(fileBuf, 0, fileSize);
@@ -59,7 +59,7 @@ void InitMap(Map* map, char* mapDir, char* filename, int tileWidth, int tileHeig
 	if (errorPtr != NULL) {
 		fprintf(stderr, "Error at %s", errorPtr);
 	}
-	
+
 	// Get tile width and height
 	map->tileWidth = tileWidth;
 	map->tileHeight = tileHeight;
@@ -74,7 +74,7 @@ void InitMap(Map* map, char* mapDir, char* filename, int tileWidth, int tileHeig
 	// Layers
 	cJSON* layers = cJSON_GetObjectItem(root, "layers");
 	int layerCount = cJSON_GetArraySize(layers);
-	
+
 	// Loop for each layer
 	for (int i = 0; i < layerCount; i++) {
 		cJSON* layer = cJSON_GetArrayItem(layers, i);
@@ -92,7 +92,7 @@ void InitMap(Map* map, char* mapDir, char* filename, int tileWidth, int tileHeig
 				for (int x = 0; x < map->width; x++) {
 					map->mapBg[y][x] = cJSON_GetArrayItem(data, y * map->width + x)->valuedouble;
 				}
-			}		
+			}
 		} else {
 			fprintf(stderr, "\033[1mNote\033[0m: Layer '%s' is not foreground or background!\n", cJSON_GetObjectItem(layer, "name")->valuestring);
 		}
@@ -133,7 +133,7 @@ cJSON* GetObject(cJSON* root, char* layerName, char* objectName) {
 			break;
 		}
 	}
-	
+
 	// If we didn't continue the loop automatically
 	if (breakLoop == false) {
 		cJSON_Delete(root);
@@ -178,7 +178,7 @@ bool GetObjectPropBool(char* filename, char* layerName, char* objectName, char* 
 		cJSON* objectProp = cJSON_GetArrayItem(objectProps, i);
 		if (
 		strcmp(cJSON_GetObjectItem(objectProp, "name")->valuestring, propertyName) == 0
-		&& 
+		&&
 		strcmp(cJSON_GetObjectItem(objectProp, "type")->valuestring, "bool") == 0
 		) {
 			objectPropBool = cJSON_IsTrue(cJSON_GetObjectItem(objectProp, "value"));
@@ -201,7 +201,7 @@ char* GetObjectPropStr(char* filename, char* layerName, char* objectName, char* 
 		cJSON* objectProp = cJSON_GetArrayItem(objectProps, i);
 		if (
 		strcmp(cJSON_GetObjectItem(objectProp, "name")->valuestring, propertyName) == 0
-		&& 
+		&&
 		strcmp(cJSON_GetObjectItem(objectProp, "type")->valuestring, "string") == 0
 		) {
 			objectPropStr = cJSON_GetObjectItem(objectProp, "value")->valuestring;
@@ -215,7 +215,7 @@ char* GetObjectPropStr(char* filename, char* layerName, char* objectName, char* 
 
 	char objectPropArray[strlen(objectPropStr) + 1];
 	char* objectPropStrLit;
-	
+
 	snprintf(objectPropArray, strlen(objectPropStr) + 1, "%s", objectPropStr);
 	objectPropStrLit = objectPropArray;
 
@@ -262,7 +262,7 @@ static void RecordType(uint32_t tileType, uint32_t* flippedH, uint32_t* flippedV
 		else
 			*flippedV = SDL_FLIP_VERTICAL;
 	}
-	
+
 	parse &= ~(0x80000000 | 0x40000000 | 0x20000000);
 
 	// If less/more than is offered, rect is nulled
@@ -285,7 +285,7 @@ static void RecordType(uint32_t tileType, uint32_t* flippedH, uint32_t* flippedV
 }
 
 void RenderMap(Map* map) {
-	RenderMapMod(map, &(Camera){0});
+	RenderMapMod(map, NULL);
 }
 
 void RenderMapMod(Map* map, Camera* camera) {
@@ -299,15 +299,23 @@ void RenderMapMod(Map* map, Camera* camera) {
 			uint32_t flippedY = 0;
 			uint32_t rotated = 0;
 			dst = (Rectangle){x * map->tileWidth, y * map->tileHeight, map->tileWidth, map->tileHeight};
-			if (RectangleInCamera(camera, dst)) {
+			float xOffset, yOffset;
+			if (camera) {
+				xOffset = camera->rect.x;
+				yOffset = camera->rect.y;
+			} else {
+				xOffset = 0;
+				yOffset = 0;
+			}
+			if (camera == NULL || RectangleInCamera(camera, dst)) {
 				// Recording foreground
 				tileType = map->mapFg[y][x];
 				RecordType(tileType, &flippedH, &flippedY, &rotated, &src, map);
-				DrawTextureEx(&map->mapRenderTexture, &src, &(Rectangle){dst.x - camera->rect.x, dst.y - camera->rect.y, dst.w, dst.h}, rotated, &(Vec2){map->tileWidth / 2, map->tileHeight / 2}, flippedH | flippedY);
+				DrawTextureEx(&map->mapRenderTexture, &src, &(Rectangle){dst.x - xOffset, dst.y - yOffset, dst.w, dst.h}, rotated, &(Vec2){map->tileWidth / 2, map->tileHeight / 2}, flippedH | flippedY);
 				// Recording background
 				tileType = map->mapBg[y][x];
 				RecordType(tileType, &flippedH, &flippedY, &rotated, &src, map);
-				DrawTextureEx(&map->mapRenderTexture, &src, &(Rectangle){dst.x - camera->rect.x, dst.y - camera->rect.y, dst.w, dst.h}, rotated, &(Vec2){map->tileWidth / 2, map->tileHeight / 2}, flippedH | flippedY);
+				DrawTextureEx(&map->mapRenderTexture, &src, &(Rectangle){dst.x - xOffset, dst.y - yOffset, dst.w, dst.h}, rotated, &(Vec2){map->tileWidth / 2, map->tileHeight / 2}, flippedH | flippedY);
 			}
 		}
 	}

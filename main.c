@@ -5,6 +5,6 @@ int main() {
 	while (WindowIsOpen(60)) {
 		printf("Window open, running at 60 fps!\n");
 	}
-	End(window);
+	End();
 	return 0;
 }
